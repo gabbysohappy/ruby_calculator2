@@ -1,22 +1,23 @@
 
 def calculator_begin
     puts "This is a calculator"
-    @first = first_number 
-    operator_choice
-end
-
-def first_number
     puts "What is the first number?"
-    first_modifier = gets.strip  
-    if first_modifier =~ /\D/
+    @first = gets.strip
+    if @first == "clear"
+        end_program
+        return @first  
+    elsif @first =~ /\D/
         error_message
-        first_number
+        calculator_begin
     else         
-        return first_modifier         
+        return @first      
     end   
 end
 
 def operator_choice
+    if @first == "clear"
+        return
+    end 
     puts "What is the operator?"
     op = gets.strip.to_s
     case op 
@@ -41,7 +42,7 @@ def second_number
     puts "What is the second number?"
     second_modifier = gets.strip
     if second_modifier == "clear"
-        end_program 
+        return second_modifier
     elsif second_modifier =~ /\D/
         error_message
         second_number
@@ -80,8 +81,12 @@ def error_message
 end
 
 def result_step
-    puts "Calculating..." 
-    puts "The result is #{@result}"
+    if @second == "clear"
+        end_program
+    else
+        puts "Calculating..." 
+        puts "The result is #{@result}"
+    end   
 end
 
 def end_program
@@ -89,3 +94,4 @@ def end_program
 end
 
 calculator_begin
+operator_choice
