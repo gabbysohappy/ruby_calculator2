@@ -1,68 +1,97 @@
-# take the first number
-# take modifier
-# take the last number
-# puts@result
-# error checking for user input
-# user input and modifiers should be checked for proper input type
-# the@result should set  @first_modifier and allow for another modifier and last number so@result continues +
-# + to build until the user decides to clear the calculator
-# - make + - * / work
-# - make clear work
 
-def menu
+def calculator_begin
     puts "This is a calculator"
     puts "What is the first number?"
-    @first_modifier = gets.strip.to_f
-    puts "What is the operator?"
-    operator = gets.strip.to_s
-    puts "What is the second number?"
-    @second_modifier = gets.strip.to_f 
-    calculating
+    @first = gets.strip
+    if @first == "clear"
+        end_program
+        return @first  
+    elsif @first =~ /\D/
+        error_message
+        calculator_begin
+    else         
+        return @first      
+    end   
+end
 
-    if @first_modifier = /\D/
-        puts "That is not a number."
-        puts "Try again."
-        @first_modifier        
-    end
-     
-    case operator
-    when '+'
+def operator_choice
+    if @first == "clear"
+        return
+    end 
+    puts "What is the operator?"
+    op = gets.strip.to_s
+    case op 
+     when "+"
         addition
-    when '-'
+     when "-"
         subtraction
-    when '/'
+     when "/"
         division
-    when '*'
-        multiplication
+     when "*"
+        multipilcation
+     when "clear"
+        end_program      
+     else
+        puts "This calculator does not support that as an operator"
+        puts "Please use +, -, /, or *"
+        operator_choice
+     end 
+end 
+
+def second_number
+    puts "What is the second number?"
+    second_modifier = gets.strip
+    if second_modifier == "clear"
+        return second_modifier
+    elsif second_modifier =~ /\D/
+        error_message
+        second_number
     else 
-      puts "This calculator does not support that as an operator"
-      puts "Please use +, -, /, or *"
-      operator
+        return second_modifier
     end
 end
 
 def addition
-    @result = @first_modifier + @second_modifier
-end
+    @second = second_number  
+    @result = @first.to_f + @second.to_f
+    result_step
+end 
 
-def subtraction
-    @result = @first_modifier - @second_modifier
+def multipilcation 
+    @second = second_number  
+    @result = @first.to_f * @second.to_f
+    result_step
 end
 
 def division
-    @result = @first_modifier / @second_modifier
+    @second = second_number  
+    @result = @first.to_f / @second.to_f
+    result_step
 end
 
-def multiplication
-    @result = @first_modifier * @second_modifier
+def subtraction
+    @second = second_number  
+    @result = @first.to_f - @second.to_f
+    result_step
 end
 
-def calculating
-   puts "Calculating..."
+def error_message
+    puts "That is not a number."
+    puts "Try again."
 end
 
-menu
-calculating
-puts @result
+def result_step
+    if @second == "clear"
+        end_program
+    else
+        puts "Calculating..." 
+        puts "The result is #{@result}"
+    end   
+end
 
+def end_program
+    puts "Goodbye"
+end
 
+calculator_begin
+operator_choice
